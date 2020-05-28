@@ -39,6 +39,7 @@ private Connection con = null;
     public frmRental() {
         initComponents();
         con = koneksi.koneksi();
+        this.setLocationRelativeTo(null);
         TampilData(sql);
     }
     

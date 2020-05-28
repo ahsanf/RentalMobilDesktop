@@ -27,7 +27,7 @@ private Connection con = null;
     private ResultSet RsPenyewa;
     private String sql="";
     private String nama_penyewa = constructor.getId();
-    private String tanggal,idrental,idmobil,idpenyewa,namapenyewa,namamobil,bm,status,statusb;
+    private String tanggal, idrental, idmobil, idpenyewa, namapenyewa, namamobil, bm, status, statusb;
     private int harga;
     /**
      * Creates new form frmRental
@@ -35,6 +35,7 @@ private Connection con = null;
     public frmRentalClient() {
         initComponents();
         con = koneksi.koneksi();
+        this.setLocationRelativeTo(null);
         TampilData(sql);
     }
     

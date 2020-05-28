@@ -131,9 +131,9 @@ public class MainClient extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         frmRentalClient menu = new frmRentalClient();
-         menu.setLocationRelativeTo(null);
-                    menu.setVisible(true);
-                    this.dispose();
+        menu.setLocationRelativeTo(null);
+        menu.setVisible(true);
+        this.dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -24,7 +24,7 @@ public class frmMobil extends javax.swing.JFrame {
     private int harga; 
 
     /**
-     * Creates new form frmmobil
+     * Creates new form frmMobil
      */
     public frmMobil() {
         initComponents();

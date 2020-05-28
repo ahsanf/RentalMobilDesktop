@@ -5,7 +5,6 @@
  */
 package main.server;
 import main.login;
-import main.server.MainServer;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,7 +21,7 @@ public class frmPenyewa extends javax.swing.JFrame {
     private Statement st;
     private ResultSet RsPenyewa;
     private String sql="";
-    private String idpenyewa,namapenyewa,alamat,hp,ktp,status,level,pass;
+    private String idpenyewa, namapenyewa, alamat, hp, ktp, status, level, pass;
     /**
      * Creates new form frmPenyewa
      */

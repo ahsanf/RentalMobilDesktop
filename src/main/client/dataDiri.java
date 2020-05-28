@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-import main.client.MainClient;
 import main.constructor;
 import main.koneksi;
 

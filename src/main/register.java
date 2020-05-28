@@ -14,11 +14,10 @@ import javax.swing.JOptionPane;
 public class register extends javax.swing.JFrame {
     private Connection con = null;
     private Statement st;
-//    private ResultSet RsPenyewa;
     private String sql="";
    
 
-    private String namapenyewa,alamat,hp,ktp,status,pass,level;
+    private String namapenyewa, alamat, hp, ktp, status, pass, level;
     
     /**
      * Creates new form register

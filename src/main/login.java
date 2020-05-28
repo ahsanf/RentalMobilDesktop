@@ -212,7 +212,7 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_loginbtnActionPerformed
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        // TODO add your handling code here:MENU_UTAMA home = new MENU_UTAMA();
+        // TODO add your handling code here:
         register user = new register();
         user.setLocationRelativeTo(null);
         user.setVisible(true);

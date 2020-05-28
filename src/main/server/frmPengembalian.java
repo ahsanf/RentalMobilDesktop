@@ -632,7 +632,7 @@ private Connection con = null;
 
     private void BTN_SIMPANActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SIMPANActionPerformed
         // TODO add your handling code here:
-//        idpengembalian=String.valueOf(Txt_id_pengembalian.getText());
+//      idpengembalian=String.valueOf(Txt_id_pengembalian.getText());
         idrental=Cmb_id_rental.getItemAt(Cmb_id_rental.getSelectedIndex()).toString();
         namapenyewa=String.valueOf(Txt_nama_penyewa.getText());
         namamobil=String.valueOf(Txt_nama_mobil.getText());
