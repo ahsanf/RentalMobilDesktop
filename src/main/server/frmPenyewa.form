@@ -79,7 +79,7 @@
                       <Component id="BTN_HAPUS" alignment="0" max="32767" attributes="0"/>
                       <Component id="BTN_EDIT" alignment="0" max="32767" attributes="0"/>
                       <Component id="BTN_BATAL" alignment="0" max="32767" attributes="0"/>
-                      <Component id="BTN_SIMPAN" alignment="0" pref="106" max="32767" attributes="0"/>
+                      <Component id="BTN_SIMPAN" alignment="0" max="32767" attributes="0"/>
                       <Component id="BTN_KELUAR" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">

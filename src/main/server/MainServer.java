@@ -6,6 +6,7 @@
 package main.server;
 
 
+import javax.swing.JOptionPane;
 import main.login;
 
 /**
@@ -198,10 +199,14 @@ public class MainServer extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        login masuk = new login();
-        masuk.setLocationRelativeTo(null);
-        masuk.setVisible(true);
-        dispose();
+        int response = JOptionPane.showConfirmDialog(null, "Keluar ?", "Konfirmasi",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+           if (response == JOptionPane.YES_OPTION) {
+                 login masuk = new login();
+                 masuk.setLocationRelativeTo(null);
+                 masuk.setVisible(true);
+                 dispose();
+            } 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

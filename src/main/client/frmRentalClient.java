@@ -483,10 +483,14 @@ private Connection con = null;
 
     private void BTN_KELUARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_KELUARActionPerformed
         // TODO add your handling code here:
-        login masuk = new login();
-        masuk.setLocationRelativeTo(null);
-        masuk.setVisible(true);
-        dispose();
+        int response = JOptionPane.showConfirmDialog(null, "Keluar ?", "Konfirmasi",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+           if (response == JOptionPane.YES_OPTION) {
+                 login masuk = new login();
+                 masuk.setLocationRelativeTo(null);
+                 masuk.setVisible(true);
+                 dispose();
+            } 
     }//GEN-LAST:event_BTN_KELUARActionPerformed
 
     private void BTN_BATALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_BATALActionPerformed
@@ -521,8 +525,8 @@ private Connection con = null;
             }
         }
         try {
-            status = "NOTREADY";
-            sql="update tb_mobil set status ='"+ status +"' where id_mobil = '"+ idmobil +"'";
+            status = "NOT READY";
+            sql="update tb_mobil set status ='"+ status +"' where nama_mobil = '"+ namamobil +"'";
             st=con.createStatement();
             st.execute(sql);
         } catch (Exception e) {
@@ -533,8 +537,8 @@ private Connection con = null;
             String sql="select * from tb_penyewa";
             Statement st = con.createStatement();
             RsPenyewa=st.executeQuery(sql);
-            status = "NOTREADY";
-            sql="update tb_penyewa set status = '"+ status +"' where id_penyewa = '"+ idpenyewa +"'";
+            status = "NOT READY";
+            sql="update tb_penyewa set status = '"+ status +"' where nama_penyewa = '"+ nama_penyewa +"'";
             st=con.createStatement();
             st.execute(sql);
         } catch (Exception e) {
@@ -574,60 +578,7 @@ private Connection con = null;
 
     private void Txt_id_rentalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Txt_id_rentalKeyPressed
         // TODO add your handling code here:
-        idrental=Txt_id_rental.getText();
-        int tekanenter=evt.getKeyCode();
-        if(tekanenter==10){
-            try{
-                Cmb_id_mobil.removeAllItems();
-                String sql = "select * from tb_mobil ";
-                Statement st = con.createStatement();
-                RsMobil = st.executeQuery(sql);
-                while (RsMobil.next()){
-                    String Aliaskd = RsMobil.getString("id_mobil");
-                    Cmb_id_mobil.addItem(Aliaskd);
-                    Cmb_status.setEnabled(false);
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null,
-                    "Gagal menampilkan id mobil \n"
-                    +e.getMessage());
-            }
-            try {
-//                Cmb_id_penyewa.removeAllItems();
-                String sql = "select * from tb_penyewa ";
-                Statement st = con.createStatement();
-                RsPenyewa = st.executeQuery(sql);
-                while (RsPenyewa.next()){
-                    String Aliaskd= RsPenyewa.getString("id_penyewa");
-//                    Cmb_id_penyewa.addItem(Aliaskd);
-                    Cmb_status.setEnabled(false);
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null,
-                    "Gagal menampilkan id mobil \n"
-                    +e.getMessage());
-
-            }
-            try {
-                sql = "select * from tb_rental "
-                + "where id_rental='"+ idrental +"'";
-                st = con.createStatement();
-                RsRental=st.executeQuery(sql);
-                while (RsRental.next()){
-                    Cmb_id_mobil.setSelectedItem(RsRental.getString("id_mobil"));
-//                    Cmb_id_penyewa.setSelectedItem(RsRental.getString("id_penyewa"));
-                    Txt_nama_penyewa.setText(RsRental.getString("nama_penyewa"));
-                    Txt_nama_mobil.setText(RsRental.getString("nama_mobil"));
-                    tanggalrental.setDate(RsRental.getDate("tgl_rental"));
-                    Txt_harga.setText(RsRental.getString("harga_rental"));
-                    Txt_status.setText(RsRental.getString("status"));
-                    JOptionPane.showMessageDialog(null, "Data Ditemukan \n");
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Data Tidak Ditemukan \n"+e.getMessage());
-                Cmb_id_mobil.requestFocus();
-            }
-        }
+      
     }//GEN-LAST:event_Txt_id_rentalKeyPressed
 
     private void Txt_id_rentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Txt_id_rentalActionPerformed

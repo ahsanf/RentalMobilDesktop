@@ -82,8 +82,10 @@ private Connection con = null;
         Txt_nama_penyewa.setText("");
         Txt_status.setText("");
         Txt_total.setText("");
+        tanggalkembali.setDate(null);
+        tanggalrental.setDate(null);
         Cmb_status.setSelectedItem("PILIH");
-        Cmb_id_rental.setSelectedItem("");
+        Cmb_id_rental.setSelectedItem("PILIH");
     }
      
     
@@ -161,6 +163,9 @@ private Connection con = null;
         TABEL3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TABEL3MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                TABEL3MouseEntered(evt);
             }
         });
         jScrollPane1.setViewportView(TABEL3);
@@ -659,11 +664,8 @@ private Connection con = null;
                 JOptionPane.showMessageDialog(null, "Data Gagal Disimpan \n"+e.getMessage());
             }
             try {
-                String sql="select * from tb_mobil";
-                Statement st = con.createStatement();
-                RsMobil=st.executeQuery(sql);
                 status = "READY";
-                sql="update tb_mobil set status = '"+ status +"' where nama_mobil ='"+ idmobil +"'";
+                sql="update tb_mobil set status = '"+ status +"' where nama_mobil ='"+ namamobil +"'";
                 st=con.createStatement();
                 st.execute(sql);
             } catch (Exception e) {
@@ -677,30 +679,46 @@ private Connection con = null;
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Maaf Error"+e.getMessage());
             }
+            try {
+                status = "READY";
+                sql="update tb_penyewa set status = '"+ status +"' where nama_penyewa = '"+ namapenyewa +"'";
+                st=con.createStatement();
+                st.execute(sql);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Maaf Error"+e.getMessage());
+            }
         }
     }//GEN-LAST:event_BTN_SIMPANActionPerformed
 
     private void BTN_KELUARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_KELUARActionPerformed
         // TODO add your handling code here:
-        login masuk = new login();
-        masuk.setLocationRelativeTo(null);
-        masuk.setVisible(true);
-        dispose();
+        int response = JOptionPane.showConfirmDialog(null, "Keluar ?", "Konfirmasi",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+           if (response == JOptionPane.YES_OPTION) {
+                 login masuk = new login();
+                 masuk.setLocationRelativeTo(null);
+                 masuk.setVisible(true);
+                 dispose();
+            } 
     }//GEN-LAST:event_BTN_KELUARActionPerformed
 
     private void BTN_HAPUSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_HAPUSActionPerformed
         // TODO add your handling code here:
-        idrental=String.valueOf(Txt_id_pengembalian.getText());
-        try {
-            sql="delete from tb_rental where id_rental='"+ idrental +"'";
-            st=con.createStatement();
-            st.execute(sql);
-            bersih();
-            TampilData(sql);
-            JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Data Gagal Dihapus"+e.getMessage());
-        }
+        idpengembalian=String.valueOf(Txt_id_pengembalian.getText());
+        int response = JOptionPane.showConfirmDialog(null, "Hapus Data ?", "Konfirmasi",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+           if (response == JOptionPane.YES_OPTION) {
+                 try {
+                    sql="delete from tb_pengembalian where id_pengembalian='"+ idpengembalian +"'";
+                    st=con.createStatement();
+                    st.execute(sql);
+                    bersih();
+                    TampilData(sql);
+                    JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus");
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "Data Gagal Dihapus"+e.getMessage());
+                        }
+            } 
     }//GEN-LAST:event_BTN_HAPUSActionPerformed
 
     private void BTN_BATALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_BATALActionPerformed
@@ -734,10 +752,24 @@ private Connection con = null;
     private void TABEL3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TABEL3MouseClicked
         // TODO add your handling code here:int baris = TABEL3.rowAtPoint(evt.getPoint());
         int baris = TABEL3.rowAtPoint(evt.getPoint());
+        String status = TABEL3.getValueAt(baris, 8).toString();
+        Cmb_status.setSelectedItem(status);
+        
         String id_pengembalian = TABEL3.getValueAt(baris, 1).toString();
         Txt_id_pengembalian.setText(id_pengembalian);
         String id_rental = TABEL3.getValueAt(baris, 2).toString();
-        Cmb_id_rental.addItem(id_rental);
+        try {
+            String sql = "select id_rental from tb_pengembalian where id_rental = '"+ id_rental +"'";
+                Statement st = con.createStatement();
+                RsRental=st.executeQuery(sql);
+                while (RsRental.next()){
+                    Cmb_id_rental.addItem(RsRental.getString("id_rental"));  
+                    Cmb_id_rental.setSelectedItem(RsRental.getString("id_rental"));
+                }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
         String nama = TABEL3.getValueAt(baris, 3).toString();
         Txt_nama_penyewa.setText(nama);
         String mobil = TABEL3.getValueAt(baris, 4).toString();
@@ -755,7 +787,7 @@ private Connection con = null;
         }
         String total = TABEL3.getValueAt(baris, 7).toString();
         Txt_total.setText(total);
-        String status = TABEL3.getValueAt(baris, 8).toString();
+        
         Txt_status.setText(status);
         try {
             String sql = "select tgl_rental from tb_rental where id_rental = '"+ id_rental +"'";
@@ -787,6 +819,10 @@ private Connection con = null;
     private void Txt_nama_penyewaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Txt_nama_penyewaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Txt_nama_penyewaActionPerformed
+
+    private void TABEL3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TABEL3MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TABEL3MouseEntered
 
     /**
      * @param args the command line arguments

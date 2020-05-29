@@ -49,8 +49,8 @@ private Connection con = null;
         DefaultTableModel datalist = new DefaultTableModel();
         datalist.addColumn("No");
         datalist.addColumn("ID RENTAL");
-        datalist.addColumn("MOBIL");
         datalist.addColumn("PENYEWA");
+        datalist.addColumn("MOBIL");
         datalist.addColumn("HARGA RENTAL");
         datalist.addColumn("TANGGAL RENTAL");
         datalist.addColumn("BM MOBIL");
@@ -80,6 +80,7 @@ private Connection con = null;
         Txt_nama_penyewa.setText("");
         Txt_status.setText("");
         Txt_nama_mobil.setText("");
+        tanggalrental.setDate(null);
         Cmb_id_mobil.setSelectedItem("PILIH");
         Cmb_id_penyewa.setSelectedItem("PILIH");
         Cmb_status.setSelectedItem("PILIH");
@@ -287,6 +288,22 @@ private Connection con = null;
             }
         });
 
+        TABEL2.setBackground(new java.awt.Color(204, 204, 204));
+        TABEL2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID RENTAL", "PENYEWA", "MOBIL", "HARGA RENTAL", "TANGGAL RENTAL", "BM", "STATUS"
+            }
+        ));
+        TABEL2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TABEL2MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(TABEL2);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -321,7 +338,7 @@ private Connection con = null;
                     .addComponent(Txt_status))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
                     .addComponent(BTN_BATAL, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(BTN_EDIT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(BTN_HAPUS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -330,6 +347,7 @@ private Connection con = null;
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addGap(21, 21, 21))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -393,24 +411,10 @@ private Connection con = null;
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12)
                     .addComponent(Txt_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 42, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(38, Short.MAX_VALUE))
         );
-
-        TABEL2.setBackground(new java.awt.Color(204, 204, 204));
-        TABEL2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID RENTAL", "PENYEWA", "MOBIL", "HARGA RENTAL", "TANGGAL RENTAL", "BM", "STATUS"
-            }
-        ));
-        TABEL2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TABEL2MouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(TABEL2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -418,19 +422,15 @@ private Connection con = null;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         pack();
@@ -443,9 +443,33 @@ private Connection con = null;
         String id = TABEL2.getValueAt(baris, 1).toString();
         Txt_id_rental.setText(id);
         String nama = TABEL2.getValueAt(baris, 2).toString();
-        Cmb_id_penyewa.setSelectedItem(nama.toString());
-        Txt_nama_penyewa.setText(nama);
+        try {
+            sql="select * from tb_penyewa where "
+            + "nama_penyewa='"+ nama +"'";
+            st=con.createStatement();
+            RsPenyewa=st.executeQuery(sql);
+            while (RsPenyewa.next()){
+                Cmb_id_penyewa.addItem(RsPenyewa.getString("nama_penyewa"));
+                Cmb_id_penyewa.setSelectedItem(RsPenyewa.getString("nama_penyewa"));
+                Txt_nama_penyewa.setText(nama);
+            }
+           
+        } catch (Exception e) {
+        }
         String mobil = TABEL2.getValueAt(baris, 3).toString();
+        try {
+            sql="select * from tb_mobil where "
+            + "nama_mobil='"+ mobil +"'";
+            st=con.createStatement();
+            RsPenyewa=st.executeQuery(sql);
+            while (RsPenyewa.next()){
+                Cmb_id_mobil.addItem(RsPenyewa.getString("nama_mobil"));
+                Cmb_id_mobil.setSelectedItem(RsPenyewa.getString("nama_mobil"));
+                Txt_nama_mobil.setText(mobil);
+            }
+           
+        } catch (Exception e) {
+        }
         Txt_nama_mobil.setText(mobil);
         Cmb_id_mobil.setSelectedItem(mobil.toString());
         String harga = TABEL2.getValueAt(baris, 4).toString();
@@ -534,25 +558,33 @@ private Connection con = null;
 
     private void BTN_KELUARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_KELUARActionPerformed
         // TODO add your handling code here:
-        login masuk = new login();
-        masuk.setLocationRelativeTo(null);
-        masuk.setVisible(true);
-        dispose();
+        int response = JOptionPane.showConfirmDialog(null, "Keluar ?", "Konfirmasi",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+           if (response == JOptionPane.YES_OPTION) {
+                 login masuk = new login();
+                 masuk.setLocationRelativeTo(null);
+                 masuk.setVisible(true);
+                 dispose();
+            } 
     }//GEN-LAST:event_BTN_KELUARActionPerformed
 
     private void BTN_HAPUSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_HAPUSActionPerformed
         // TODO add your handling code here:
-        idrental=String.valueOf(Txt_id_rental.getText());
-        try {
-            sql="delete from tb_rental where id_rental='"+ idrental +"'";
-            st=con.createStatement();
-            st.execute(sql);
-            bersih();
-            TampilData(sql);
-            JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Data Gagal Dihapus"+e.getMessage());
-        }
+        int response = JOptionPane.showConfirmDialog(null, "Hapus Data ?", "Konfirmasi",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+           if (response == JOptionPane.YES_OPTION) {
+             idrental=String.valueOf(Txt_id_rental.getText());
+                try {
+                sql="delete from tb_rental where id_rental='"+ idrental +"'";
+                st=con.createStatement();
+                st.execute(sql);
+                bersih();
+                TampilData(sql);
+                JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus");
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Data Gagal Dihapus"+e.getMessage());
+                    }
+            } 
     }//GEN-LAST:event_BTN_HAPUSActionPerformed
 
     private void BTN_BATALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_BATALActionPerformed
@@ -608,7 +640,7 @@ private Connection con = null;
             }
         }
         try {
-            status = "NOTREADY";
+            status = "NOT READY";
             sql="update tb_mobil set status ='"+ status +"' where id_mobil = '"+ idmobil +"'";
             st=con.createStatement();
             st.execute(sql);
@@ -620,7 +652,7 @@ private Connection con = null;
             String sql="select * from tb_penyewa";
             Statement st = con.createStatement();
             RsPenyewa=st.executeQuery(sql);
-            status = "NOTREADY";
+            status = "NOT READY";
             sql="update tb_penyewa set status = '"+ status +"' where id_penyewa = '"+ idpenyewa +"'";
             st=con.createStatement();
             st.execute(sql);

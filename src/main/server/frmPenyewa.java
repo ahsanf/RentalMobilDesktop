@@ -418,26 +418,35 @@ public class frmPenyewa extends javax.swing.JFrame {
 
     private void BTN_HAPUSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_HAPUSActionPerformed
         // TODO add your handling code here:
+        
         idpenyewa=String.valueOf(Txt_id_penyewa.getText());
-        try {
-            sql="DELETE FROM tb_penyewa"
-            +" where id_penyewa='"+ idpenyewa +"'";
-            st=con.createStatement();
-            st.execute(sql);
-            bersih();
-            TampilData(sql);
-            JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Data Gagal Dihapus"+e.getMessage());
-        }
+        int response = JOptionPane.showConfirmDialog(null, "Hapus Data ?", "Konfirmasi",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (response == JOptionPane.YES_OPTION) {
+                try {
+                    sql="DELETE FROM tb_penyewa"
+                    +" where id_penyewa='"+ idpenyewa +"'";
+                    st=con.createStatement();
+                    st.execute(sql);
+                    bersih();
+                    TampilData(sql);
+                    JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Data Gagal Dihapus"+e.getMessage());
+                }
+            } 
     }//GEN-LAST:event_BTN_HAPUSActionPerformed
 
     private void BTN_KELUARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_KELUARActionPerformed
         // TODO add your handling code here:
-        login masuk = new login();
-        masuk.setLocationRelativeTo(null);
-        masuk.setVisible(true);
-        dispose();
+       int response = JOptionPane.showConfirmDialog(null, "Keluar ?", "Konfirmasi",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+           if (response == JOptionPane.YES_OPTION) {
+                 login masuk = new login();
+                 masuk.setLocationRelativeTo(null);
+                 masuk.setVisible(true);
+                 dispose();
+            } 
     }//GEN-LAST:event_BTN_KELUARActionPerformed
 
     private void Txt_nama_penyewaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Txt_nama_penyewaActionPerformed
