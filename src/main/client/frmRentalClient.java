@@ -27,7 +27,7 @@ private Connection con = null;
     private ResultSet RsPenyewa;
     private String sql="";
     private String nama_penyewa = constructor.getId();
-    private String tanggal, idrental, idmobil, idpenyewa, namapenyewa, namamobil, bm, status, statusb;
+    private String tanggal, namapenyewa, namamobil, bm, status, statusb;
     private int harga;
     /**
      * Creates new form frmRental
@@ -524,6 +524,14 @@ private Connection con = null;
                 JOptionPane.showMessageDialog(null,"RENTAL GAGAL \n"+e.getMessage());
             }
         }
+         try {
+            status = "NOT READY";
+            sql="update tb_penyewa set status ='"+ status +"' where nama_penyewa = '"+ nama_penyewa +"'";
+            st=con.createStatement();
+            st.execute(sql);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Maaf Error" +e.getMessage());
+        }
         try {
             status = "NOT READY";
             sql="update tb_mobil set status ='"+ status +"' where nama_mobil = '"+ namamobil +"'";
@@ -533,17 +541,7 @@ private Connection con = null;
             JOptionPane.showMessageDialog(null, "Maaf Error" +e.getMessage());
         }
 
-        try {
-            String sql="select * from tb_penyewa";
-            Statement st = con.createStatement();
-            RsPenyewa=st.executeQuery(sql);
-            status = "NOT READY";
-            sql="update tb_penyewa set status = '"+ status +"' where nama_penyewa = '"+ nama_penyewa +"'";
-            st=con.createStatement();
-            st.execute(sql);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Maaf Error" +e.getMessage());
-        }
+        
     }//GEN-LAST:event_BTN_SIMPANActionPerformed
 
     private void Cmb_statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cmb_statusActionPerformed
