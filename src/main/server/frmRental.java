@@ -55,6 +55,7 @@ private Connection con = null;
         datalist.addColumn("TANGGAL RENTAL");
         datalist.addColumn("BM MOBIL");
         datalist.addColumn("STATUS");
+        
         try{
             int i = 1;
             st=con.createStatement();
@@ -65,7 +66,8 @@ private Connection con = null;
                 RsRental.getString(1), RsRental.getString(2),
                 RsRental.getString(3), RsRental.getString(4),
                 RsRental.getString(5), RsRental.getString(7),
-                RsRental.getString(6)});
+                RsRental.getString(6)
+               });
             TABEL2.setModel(datalist);
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Gagal Tampil \n"+e.getMessage());
@@ -639,25 +641,45 @@ private Connection con = null;
                 JOptionPane.showMessageDialog(null,"Data Gagal Disimpan \n"+e.getMessage());
             }
         }
-        try {
-            status = "NOT READY";
-            sql="update tb_mobil set status ='"+ status +"' where id_mobil = '"+ idmobil +"'";
-            st=con.createStatement();
-            st.execute(sql);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Maaf Error" +e.getMessage());
-        }
+//        try {
+//            status = "NOT READY";
+//            sql="update tb_mobil set status ='"+ status +"' where id_mobil = '"+ idmobil +"'";
+//            st=con.createStatement();
+//            st.execute(sql);
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, "Maaf Error" +e.getMessage());
+//        }
 
         try {
             String sql="select * from tb_penyewa";
             Statement st = con.createStatement();
             RsPenyewa=st.executeQuery(sql);
-            status = "NOT READY";
-            sql="update tb_penyewa set status = '"+ status +"' where id_penyewa = '"+ idpenyewa +"'";
+            sql="update tb_penyewa set status = 'NOT READY' where nama_penyewa = '"+ namapenyewa +"'";
             st=con.createStatement();
             st.execute(sql);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Maaf Error" +e.getMessage());
+        }
+        
+        try {
+            String sql="select stok from tb_mobil where nama_mobil = '"+ namamobil +"'";
+            Statement st = con.createStatement();
+            RsMobil = st.executeQuery(sql);
+            int stok=0;
+            while(RsMobil.next()){
+                stok = RsMobil.getInt("stok"); 
+            }
+            stok--;
+            sql = "update tb_mobil set stok = '"+ stok +"' where id_mobil = '"+ idmobil +"'";
+            st.execute(sql);
+            if(stok<=0){
+               sql="update tb_mobil set status = 'NOT READY' where id_mobil = '"+ idmobil +"'";
+               st.execute(sql);
+            }
+            System.out.print(stok+"");
+            
+        } catch (Exception e) {
+            System.out.print(e.getLocalizedMessage());
         }
     }//GEN-LAST:event_BTN_SIMPANActionPerformed
 

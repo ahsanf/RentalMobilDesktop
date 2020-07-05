@@ -20,7 +20,7 @@ public class frmMobil extends javax.swing.JFrame {
     private ResultSet RsMobil;
     private String sql="";
     
-    private String id,mobil,merk,bm,status;
+    private String id,mobil,merk,bm,status, stok;
     private int harga; 
 
     /**
@@ -45,6 +45,7 @@ public class frmMobil extends javax.swing.JFrame {
         datalist.addColumn("BM MOBIL");
         datalist.addColumn("HARGA RENTAL");
         datalist.addColumn("STATUS");
+        datalist.addColumn("STOK");
         try{
             int i = 1;
             st=con.createStatement();
@@ -54,7 +55,8 @@ public class frmMobil extends javax.swing.JFrame {
                     (i++),
                 RsMobil.getString(1), RsMobil.getString(2),
                 RsMobil.getString(3), RsMobil.getString(4),
-                RsMobil.getString(5), RsMobil.getString(6)});
+                RsMobil.getString(5), RsMobil.getString(6),
+                RsMobil.getString(7)});
             TABEL.setModel(datalist);
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Gagal Tampil \n"+e.getMessage());
@@ -68,6 +70,7 @@ public class frmMobil extends javax.swing.JFrame {
         Txt_merk.setText("");
         Txt_nama_mobil.setText("");
         Cmb_status.setSelectedItem("PILIH");
+        txtStok.setText("");
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -104,6 +107,8 @@ public class frmMobil extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         txt_id_mobil = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtStok = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -132,7 +137,7 @@ public class frmMobil extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "NAMA MOBIL", "MEREK MOBIL", "BM MOBIL", "HARGA RENTAL", "STATUS"
+                "ID", "NAMA MOBIL", "MEREK MOBIL", "BM MOBIL", "HARGA RENTAL", "STATUS", "STOK"
             }
         ));
         TABEL.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -237,6 +242,14 @@ public class frmMobil extends javax.swing.JFrame {
 
         jLabel1.setText("ID");
 
+        jLabel8.setText("STOK");
+
+        txtStok.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtStokActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -248,9 +261,10 @@ public class frmMobil extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(jLabel4)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel5)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel8))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Txt_nama_mobil)
@@ -258,7 +272,8 @@ public class frmMobil extends javax.swing.JFrame {
                     .addComponent(Txt_harga)
                     .addComponent(Txt_merk)
                     .addComponent(Cmb_status, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txt_id_mobil, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_id_mobil, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                    .addComponent(txtStok))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(BTN_SIMPAN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -277,18 +292,23 @@ public class frmMobil extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(BTN_SIMPAN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BTN_BATAL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BTN_EDIT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BTN_HAPUS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(jLabel2))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(BTN_SIMPAN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BTN_BATAL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BTN_EDIT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BTN_HAPUS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(jLabel2)))
+                        .addGap(6, 6, 6)
+                        .addComponent(BTN_KELUAR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(21, 21, 21))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txt_id_mobil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -312,10 +332,12 @@ public class frmMobil extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Cmb_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))))
-                .addGap(6, 6, 6)
-                .addComponent(BTN_KELUAR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(21, 21, 21)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(txtStok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE))
         );
 
@@ -345,6 +367,7 @@ public class frmMobil extends javax.swing.JFrame {
         bm=String.valueOf(Txt_bm.getText());
         harga =Integer.valueOf(Txt_harga.getText());
         status=String.valueOf(Cmb_status.getSelectedItem());
+        stok=String.valueOf(txtStok.getText());
         if (Cmb_status.getSelectedItem().equals("PILIH")){
             JOptionPane.showMessageDialog(null, "STATUS BELUM DIPILIH");
         }
@@ -354,9 +377,9 @@ public class frmMobil extends javax.swing.JFrame {
         try{
             sql="INSERT INTO tb_mobil(nama_mobil, "
                     + "merek_mobil, bm_mobil, harga_rental, "
-                    + "status)value"
+                    + "status,stok)value"
                     + "('"+ mobil+"','"+ merk +"','"+ bm +"',"
-                    + "'"+ harga +"','"+ status +"')";
+                    + "'"+ harga +"','"+ status +"','"+ stok +"')";
             st=con.createStatement();
             st.execute(sql);
             bersih();
@@ -375,8 +398,9 @@ public class frmMobil extends javax.swing.JFrame {
                 bm=String.valueOf(Txt_bm.getText());
                 harga=Integer.parseInt(Txt_harga.getText());
                 status=String.valueOf(Cmb_status.getSelectedItem());
+                stok=String.valueOf(txtStok.getText());
                 try {
-                    sql="update tb_mobil set nama_mobil='"+ mobil +"',merek_mobil='"+ merk +"',BM_mobil='"+ bm +"',harga_rental='"+ harga +"',status='"+ status +"' where id_mobil = '"+ id +"'";
+                    sql="update tb_mobil set nama_mobil='"+ mobil +"',merek_mobil='"+ merk +"',BM_mobil='"+ bm +"',harga_rental='"+ harga +"',status='"+ status +"',stok='"+ stok+"' where id_mobil = '"+ id +"'";
                     st=con.createStatement();
                     st.execute(sql);
                     bersih();
@@ -453,35 +477,8 @@ public class frmMobil extends javax.swing.JFrame {
 
     private void Txt_merkKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Txt_merkKeyPressed
         // TODO add your handling code here:
-//        id=Txt_id_mobil.getText();
-        mobil=Txt_nama_mobil.getText();
-//        try {
-//            // TODO add your handling code here:
-//            id=String.valueOf(RsMobil.getString("id_mobil"));
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null, "Gagal pada database" + ex);
-//        }
-        int tekanenter=evt.getKeyCode();
-        if(tekanenter==10){
-            try{
-                sql="select * from tb_mobil "
-                        + "where nama_mobil='"+ mobil +"'";
-                st=con.createStatement();
-                RsMobil=st.executeQuery(sql);
-                while (RsMobil.next()){
-                    Txt_nama_mobil.setText(RsMobil.getString("nama_mobil"));
-                    Txt_merk.setText(RsMobil.getString(3));
-                    Txt_bm.setText(RsMobil.getString(4));
-                    Txt_harga.setText(RsMobil.getString(5));
-                    Cmb_status.setSelectedItem(RsMobil.getString(6));
-                    JOptionPane.showMessageDialog(null, "Data Ditemukan");
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Data Tidak Ditemukan \n"
-                +e.getMessage());
-                Txt_nama_mobil.requestFocus();
-            }
-        }
+
+        
     }//GEN-LAST:event_Txt_merkKeyPressed
 
     private void TABELMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TABELMouseClicked
@@ -499,8 +496,14 @@ public class frmMobil extends javax.swing.JFrame {
         Txt_harga.setText(harga);
         String status = TABEL.getValueAt(baris, 6).toString();
         Cmb_status.setSelectedItem(status);
+        String stok = TABEL.getValueAt(baris, 7).toString();
+        txtStok.setText(stok);
       
     }//GEN-LAST:event_TABELMouseClicked
+
+    private void txtStokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStokActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtStokActionPerformed
 
     /**
      * @param args the command line arguments
@@ -558,8 +561,10 @@ public class frmMobil extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField txtStok;
     private javax.swing.JTextField txt_id_mobil;
     // End of variables declaration//GEN-END:variables
 }

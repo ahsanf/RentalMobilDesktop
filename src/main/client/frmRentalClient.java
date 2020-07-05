@@ -532,13 +532,36 @@ private Connection con = null;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Maaf Error" +e.getMessage());
         }
+//        try {
+//            status = "NOT READY";
+//            sql="update tb_mobil set status ='"+ status +"' where nama_mobil = '"+ namamobil +"'";
+//            st=con.createStatement();
+//            st.execute(sql);
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, "Maaf Error" +e.getMessage());
+//        }
+        
         try {
+            String sql="select stok from tb_mobil where nama_mobil = '"+ namamobil +"'";
+            Statement st = con.createStatement();
+            RsMobil = st.executeQuery(sql);
             status = "NOT READY";
-            sql="update tb_mobil set status ='"+ status +"' where nama_mobil = '"+ namamobil +"'";
-            st=con.createStatement();
+            int stok=0;
+            while(RsMobil.next()){
+                stok = RsMobil.getInt("stok"); 
+            }
+            if(stok!=0){
+                stok--;
+                sql ="update tb_mobil set stok = '"+ stok +"' where nama_mobil = '"+ namamobil +"'";
+                 
+            } else {
+               sql ="update tb_mobil set status = '"+ status +"' where nama_mobil = '"+ namamobil +"'";
+               
+            }
             st.execute(sql);
+            System.out.print(stok+"");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Maaf Error" +e.getMessage());
+            System.out.print(e.getLocalizedMessage());
         }
 
         
